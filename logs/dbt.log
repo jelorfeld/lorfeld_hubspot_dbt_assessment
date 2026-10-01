@@ -31,3 +31,80 @@ Happy modeling!
 [0m15:10:22.924996 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x108766640>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x109cdad00>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x109c493a0>]}
 [0m15:10:22.925202 [debug] [MainThread]: Flushing usage events
 [0m15:10:23.140571 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m15:48:10.037997 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10c3a3490>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10d87e580>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10d87e8b0>]}
+
+
+============================== 15:48:10.039992 | 21d0f528-1ebf-4066-8247-76b398be572f ==============================
+[0m15:48:10.039992 [info ] [MainThread]: Running with dbt=1.10.23
+[0m15:48:10.040201 [debug] [MainThread]: running dbt with arguments {'log_format': 'default', 'empty': 'None', 'partial_parse': 'True', 'warn_error': 'None', 'version_check': 'True', 'no_print': 'None', 'log_cache_events': 'False', 'target_path': 'None', 'printer_width': '80', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'profiles_dir': '/Users/jelorfeld/.dbt', 'introspect': 'True', 'use_colors': 'True', 'use_experimental_parser': 'False', 'static_parser': 'True', 'write_json': 'True', 'cache_selected_only': 'False', 'debug': 'False', 'log_path': 'logs', 'send_anonymous_usage_stats': 'True', 'invocation_command': "dbt show --inline select * from {{ source('rental', 'listings') }} --limit 5", 'indirect_selection': 'eager', 'quiet': 'False', 'fail_fast': 'False'}
+[0m15:48:10.040340 [info ] [MainThread]: This version of dbt is deprecated and no longer receives regular patches, including for known bugs. We recommend upgrading to a newer supported version of dbt: https://docs.getdbt.com/docs/dbt-versions
+[0m15:48:10.040454 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'deprecated_version_invocation', 'label': '21d0f528-1ebf-4066-8247-76b398be572f', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10c3a3490>]}
+[0m15:48:10.040654 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path /Users/jelorfeld/Documents/Workspace/lorfeld_hubspot_dbt_assessment/dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m15:48:10.041803 [debug] [MainThread]: Resource report: {"command_name": "show", "command_success": false, "command_wall_clock_time": 0.039463792, "process_in_blocks": "0", "process_kernel_time": 0.095518, "process_mem_max_rss": "98172928", "process_out_blocks": "0", "process_user_time": 0.429028}
+[0m15:48:10.041961 [debug] [MainThread]: Command `dbt show` failed at 15:48:10.041923 after 0.04 seconds
+[0m15:48:10.042070 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10c3a3490>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10d87e2e0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10d87e250>]}
+[0m15:48:10.042177 [debug] [MainThread]: Flushing usage events
+[0m15:48:10.238336 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m15:48:17.497453 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1078e34c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x108dbb4c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x108dbb7f0>]}
+
+
+============================== 15:48:17.498861 | fcf37df4-2c90-4a2a-b7d3-386421d6fcb5 ==============================
+[0m15:48:17.498861 [info ] [MainThread]: Running with dbt=1.10.23
+[0m15:48:17.499064 [debug] [MainThread]: running dbt with arguments {'write_json': 'True', 'quiet': 'False', 'use_experimental_parser': 'False', 'use_colors': 'True', 'indirect_selection': 'eager', 'cache_selected_only': 'False', 'log_format': 'default', 'static_parser': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'fail_fast': 'False', 'debug': 'False', 'no_print': 'None', 'log_cache_events': 'False', 'printer_width': '80', 'introspect': 'True', 'log_path': 'logs', 'warn_error': 'None', 'target_path': 'None', 'empty': 'None', 'version_check': 'True', 'invocation_command': 'dbt debug', 'partial_parse': 'True', 'send_anonymous_usage_stats': 'True', 'profiles_dir': '/Users/jelorfeld/.dbt'}
+[0m15:48:17.499207 [info ] [MainThread]: This version of dbt is deprecated and no longer receives regular patches, including for known bugs. We recommend upgrading to a newer supported version of dbt: https://docs.getdbt.com/docs/dbt-versions
+[0m15:48:17.499321 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'deprecated_version_invocation', 'label': 'fcf37df4-2c90-4a2a-b7d3-386421d6fcb5', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1078e34c0>]}
+[0m15:48:17.511340 [info ] [MainThread]: dbt version: 1.10.23
+[0m15:48:17.511499 [info ] [MainThread]: python version: 3.9.6
+[0m15:48:17.511600 [info ] [MainThread]: python path: /Users/jelorfeld/Documents/Workspace/lorfeld_hubspot_dbt_assessment/.venv/bin/python3
+[0m15:48:17.511697 [info ] [MainThread]: os info: macOS-27.0.1-arm64-arm-64bit
+[0m15:48:17.581926 [info ] [MainThread]: Using profiles dir at /Users/jelorfeld/.dbt
+[0m15:48:17.582131 [info ] [MainThread]: Using profiles.yml file at /Users/jelorfeld/.dbt/profiles.yml
+[0m15:48:17.582255 [info ] [MainThread]: Using dbt_project.yml file at /Users/jelorfeld/Documents/Workspace/lorfeld_hubspot_dbt_assessment/dbt_project.yml
+[0m15:48:17.583197 [info ] [MainThread]: adapter type: duckdb
+[0m15:48:17.583319 [info ] [MainThread]: adapter version: 1.10.0
+[0m15:48:17.583426 [info ] [MainThread]: Configuration:
+[0m15:48:17.583521 [info ] [MainThread]:   profiles.yml file [[32mOK found and valid[0m]
+[0m15:48:17.583613 [info ] [MainThread]:   dbt_project.yml file [[31mERROR not found[0m]
+[0m15:48:17.583702 [info ] [MainThread]: Required dependencies:
+[0m15:48:17.583816 [debug] [MainThread]: Executing "git --help"
+[0m15:48:17.596098 [debug] [MainThread]: STDOUT: "b"usage: git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]\n           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]\n           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--no-lazy-fetch]\n           [--no-optional-locks] [--no-advice] [--bare] [--git-dir=<path>]\n           [--work-tree=<path>] [--namespace=<name>] [--config-env=<name>=<envvar>]\n           <command> [<args>]\n\nThese are common Git commands used in various situations:\n\nstart a working area (see also: git help tutorial)\n   clone      Clone a repository into a new directory\n   init       Create an empty Git repository or reinitialize an existing one\n\nwork on the current change (see also: git help everyday)\n   add        Add file contents to the index\n   mv         Move or rename a file, a directory, or a symlink\n   restore    Restore working tree files\n   rm         Remove files from the working tree and from the index\n\nexamine the history and state (see also: git help revisions)\n   bisect     Use binary search to find the commit that introduced a bug\n   diff       Show changes between commits, commit and working tree, etc\n   grep       Print lines matching a pattern\n   log        Show commit logs\n   show       Show various types of objects\n   status     Show the working tree status\n\ngrow, mark and tweak your common history\n   backfill   Download missing objects in a partial clone\n   branch     List, create, or delete branches\n   commit     Record changes to the repository\n   history    EXPERIMENTAL: Rewrite history\n   merge      Join two or more development histories together\n   rebase     Reapply commits on top of another base tip\n   reset      Set `HEAD` or the index to a known state\n   switch     Switch branches\n   tag        Create, list, delete or verify tags\n\ncollaborate (see also: git help workflows)\n   fetch      Download objects and refs from another repository\n   pull       Fetch from and integrate with another repository or a local branch\n   push       Update remote refs along with associated objects\n\n'git help -a' and 'git help -g' list available subcommands and some\nconcept guides. See 'git help <command>' or 'git help <concept>'\nto read about a specific subcommand or concept.\nSee 'git help git' for an overview of the system.\n""
+[0m15:48:17.596519 [debug] [MainThread]: STDERR: "b''"
+[0m15:48:17.596646 [info ] [MainThread]:  - git [[32mOK found[0m]
+
+[0m15:48:17.596800 [info ] [MainThread]: Connection:
+[0m15:48:17.596956 [info ] [MainThread]:   database: dev
+[0m15:48:17.597059 [info ] [MainThread]:   schema: main
+[0m15:48:17.597151 [info ] [MainThread]:   path: dev.duckdb
+[0m15:48:17.597242 [info ] [MainThread]:   config_options: None
+[0m15:48:17.597329 [info ] [MainThread]:   extensions: None
+[0m15:48:17.597426 [info ] [MainThread]:   settings: {}
+[0m15:48:17.597513 [info ] [MainThread]:   external_root: .
+[0m15:48:17.597599 [info ] [MainThread]:   use_credential_provider: None
+[0m15:48:17.597685 [info ] [MainThread]:   attach: None
+[0m15:48:17.597770 [info ] [MainThread]:   filesystems: None
+[0m15:48:17.597855 [info ] [MainThread]:   remote: None
+[0m15:48:17.597938 [info ] [MainThread]:   plugins: None
+[0m15:48:17.598024 [info ] [MainThread]:   disable_transactions: False
+[0m15:48:17.598266 [info ] [MainThread]: Registered adapter: duckdb=1.10.0
+[0m15:48:17.649859 [debug] [MainThread]: Acquiring new duckdb connection 'debug'
+[0m15:48:17.669142 [debug] [MainThread]: Using duckdb connection "debug"
+[0m15:48:17.669278 [debug] [MainThread]: On debug: select 1 as id
+[0m15:48:17.669373 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m15:48:17.675668 [debug] [MainThread]: SQL status: OK in 0.006 seconds
+[0m15:48:17.676002 [debug] [MainThread]: On debug: Close
+[0m15:48:17.676126 [info ] [MainThread]:   Connection test: [[32mOK connection ok[0m]
+
+[0m15:48:17.676244 [info ] [MainThread]: [31m1 check failed:[0m
+[0m15:48:17.676382 [info ] [MainThread]: Project loading failed for the following reason:
+ project path </Users/jelorfeld/Documents/Workspace/lorfeld_hubspot_dbt_assessment/dbt_project.yml> not found
+
+[0m15:48:17.677259 [debug] [MainThread]: Resource report: {"command_name": "debug", "command_success": false, "command_wall_clock_time": 0.20667529, "process_in_blocks": "0", "process_kernel_time": 0.103548, "process_mem_max_rss": "126992384", "process_out_blocks": "0", "process_user_time": 0.511858}
+[0m15:48:17.677423 [debug] [MainThread]: Command `dbt debug` failed at 15:48:17.677387 after 0.21 seconds
+[0m15:48:17.677533 [debug] [MainThread]: Connection 'debug' was properly closed.
+[0m15:48:17.677650 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1078e34c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x108f9ae20>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x108f9a850>]}
+[0m15:48:17.677787 [debug] [MainThread]: Flushing usage events
+[0m15:48:17.842006 [debug] [MainThread]: An error was encountered while trying to flush usage events
