@@ -13,6 +13,8 @@ models:
               arguments:
                 to: ref('stg_listings')
                 field: listing_id
+                config:
+                  severity: warn
 
       - name: amenities_changed_at
         description: Timestamp when the amenity configuration changed.

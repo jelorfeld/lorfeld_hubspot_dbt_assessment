@@ -2,3 +2,4 @@ dbt_packages/
 target/
 .venv/
 logs/
+analyses/explore_*.sql

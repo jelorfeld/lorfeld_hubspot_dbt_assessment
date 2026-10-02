@@ -108,3 +108,21 @@ Runtime Error
 [0m15:48:17.677650 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1078e34c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x108f9ae20>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x108f9a850>]}
 [0m15:48:17.677787 [debug] [MainThread]: Flushing usage events
 [0m15:48:17.842006 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m14:41:55.274578 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x108529df0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x109a0dcd0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x109a0d9a0>]}
+
+
+============================== 14:41:55.276530 | 21aad78c-a0a4-4c10-b2e3-e4056f2002c6 ==============================
+[0m14:41:55.276530 [info ] [MainThread]: Running with dbt=1.10.23
+[0m14:41:55.276779 [debug] [MainThread]: running dbt with arguments {'indirect_selection': 'eager', 'no_print': 'None', 'log_format': 'default', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'invocation_command': 'dbt build', 'warn_error': 'None', 'use_experimental_parser': 'False', 'log_path': 'logs', 'introspect': 'True', 'log_cache_events': 'False', 'version_check': 'True', 'partial_parse': 'True', 'empty': 'False', 'cache_selected_only': 'False', 'printer_width': '80', 'send_anonymous_usage_stats': 'True', 'debug': 'False', 'use_colors': 'True', 'static_parser': 'True', 'write_json': 'True', 'target_path': 'None', 'profiles_dir': '/Users/jelorfeld/.dbt', 'quiet': 'False', 'fail_fast': 'False'}
+[0m14:41:55.276936 [info ] [MainThread]: This version of dbt is deprecated and no longer receives regular patches, including for known bugs. We recommend upgrading to a newer supported version of dbt: https://docs.getdbt.com/docs/dbt-versions
+[0m14:41:55.277054 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'deprecated_version_invocation', 'label': '21aad78c-a0a4-4c10-b2e3-e4056f2002c6', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x108529df0>]}
+[0m14:41:55.277265 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path /Users/jelorfeld/Documents/Workspace/lorfeld_hubspot_dbt_assessment/dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m14:41:55.278182 [debug] [MainThread]: Resource report: {"command_name": "build", "command_success": false, "command_wall_clock_time": 0.029559083, "process_in_blocks": "0", "process_kernel_time": 0.07736, "process_mem_max_rss": "100990976", "process_out_blocks": "0", "process_user_time": 0.454197}
+[0m14:41:55.278342 [debug] [MainThread]: Command `dbt build` failed at 14:41:55.278306 after 0.03 seconds
+[0m14:41:55.278458 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x108529df0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x109a0d130>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x109a0dcd0>]}
+[0m14:41:55.278575 [debug] [MainThread]: Flushing usage events
+[0m14:41:56.494467 [debug] [MainThread]: An error was encountered while trying to flush usage events

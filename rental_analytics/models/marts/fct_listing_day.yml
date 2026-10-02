@@ -1,0 +1,96 @@
+version: 2
+
+models:
+  - name: fct_listing_day
+    description: >
+      Daily listing-level reporting mart. The grain is one row per listing
+      per calendar date.
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - listing_id
+            - calendar_date
+
+    columns:
+      - name: listing_id
+        description: Identifier for the listing.
+        tests:
+          - not_null
+
+      - name: calendar_date
+        description: Calendar date represented by the row.
+        tests:
+          - not_null
+
+      - name: listing_name
+        description: Display name of the listing.
+
+      - name: host_id
+        description: Identifier for the listing host.
+
+      - name: neighborhood
+        description: Neighborhood where the listing is located.
+
+      - name: property_type
+        description: Type of property.
+
+      - name: room_type
+        description: Type of room.
+
+      - name: accommodates
+        description: Number of guests the listing accommodates.
+
+      - name: bedrooms
+        description: Number of bedrooms.
+
+      - name: beds
+        description: Number of beds.
+
+      - name: is_orphan_listing
+        description: Indicates that the calendar row has no matching listing metadata in stg_listings.
+        tests:
+          - accepted_values:
+              values: [true, false]
+
+      - name: nightly_price
+        description: Nightly price for the listing on the calendar date.
+
+      - name: is_available
+        description: Whether the listing was available on the calendar date.
+        tests:
+          - accepted_values:
+              values: [true, false]
+
+      - name: reservation_id
+        description: Reservation identifier when the date was reserved.
+
+      - name: is_occupied
+        description: Whether the listing had a reservation on the date.
+        tests:
+          - accepted_values:
+              values: [true, false]
+
+      - name: nightly_revenue
+        description: Nightly price when occupied, otherwise zero.
+
+      - name: minimum_nights
+        description: Minimum consecutive-night requirement.
+
+      - name: maximum_nights
+        description: Maximum consecutive-night limit.
+
+      - name: amenities
+        description: JSON array of amenities active on the date.
+
+      - name: amenities_effective_from
+        description: Date when the active amenity configuration began.
+
+      - name: has_air_conditioning
+        description: Whether air conditioning was available.
+
+      - name: has_lockbox
+        description: Whether a lockbox was available.
+
+      - name: has_first_aid_kit
+        description: Whether a first aid kit was available.

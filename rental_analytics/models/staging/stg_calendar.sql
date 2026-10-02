@@ -58,8 +58,8 @@ deduplicated as (
         order by
             (reservation_id is not null) desc,
             nightly_price desc nulls last,
-            minimum_nights,
-            maximum_nights
+            minimum_nights asc,
+            maximum_nights asc
     ) = 1
 
 )

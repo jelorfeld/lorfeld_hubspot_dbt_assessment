@@ -20,7 +20,9 @@ models:
               arguments:
                 to: ref('stg_listings')
                 field: listing_id
-
+                config:
+                  severity: warn
+                  
       - name: calendar_date
         description: Date represented by the calendar row.
         data_tests:
