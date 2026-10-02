@@ -54,9 +54,7 @@ models:
         description: JSON array of amenities.
 
       - name: listed_price
-        description: >
-          Cleaned listing price snapshot from the source listing.
-          Daily pricing should come from the calendar model.
+        description: Cleaned listing price snapshot from the source listing. Daily pricing should come from the calendar model.
 
       - name: number_of_reviews
         description: Total number of reviews received by the listing.

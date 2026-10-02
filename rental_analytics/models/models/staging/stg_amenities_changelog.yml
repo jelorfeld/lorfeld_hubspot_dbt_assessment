@@ -2,25 +2,24 @@ version: 2
 
 models:
   - name: stg_amenities_changelog
-    description: >
-      Cleaned amenity change events for each listing.
-      Each row represents one amenity snapshot at a point in time.
+    description: Cleaned amenity change events for each listing. Each row represents one amenity snapshot at a point in time.
 
     columns:
       - name: listing_id
         description: Identifier for the listing.
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              to: ref('stg_listings')
-              field: listing_id
+              arguments:
+                to: ref('stg_listings')
+                field: listing_id
 
       - name: amenities_changed_at
         description: Timestamp when the amenity configuration changed.
-        tests:
+        data_tests:
           - not_null
 
       - name: amenities
         description: JSON array of amenities active after the change.
-        tests:
+        data_tests:
           - not_null

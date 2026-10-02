@@ -7,6 +7,7 @@ with source as (
     select *
     from {{ ref('listings') }}
 ),
+
 cleaned as (
     select
         try_cast(id as bigint) as listing_id,
@@ -35,5 +36,6 @@ cleaned as (
             as review_scores_rating
     from source
 )
+
 select *
 from cleaned

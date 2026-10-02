@@ -4,31 +4,41 @@ models:
   - name: stg_calendar
     description: Cleaned calendar data at the listing-day grain. Each row represents one listing on one calendar date.
 
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - listing_id
+              - calendar_date
+
     columns:
       - name: listing_id
         description: Identifier for the listing.
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              to: ref('stg_listings')
-              field: listing_id
+              arguments:
+                to: ref('stg_listings')
+                field: listing_id
 
       - name: calendar_date
         description: Date represented by the calendar row.
-        tests:
+        data_tests:
           - not_null
 
       - name: is_available
         description: Whether the listing was available on the calendar date.
-        tests:
+        data_tests:
+          - not_null
           - accepted_values:
-              values: [true, false]
+              arguments:
+                values: [true, false]
 
       - name: reservation_id
-        description: Reservation identifier, when the date was reserved.
+        description: Reservation identifier, when the date was reserved. Null when there is no reservation.
 
       - name: nightly_price
-        description: Cleaned nightly rental price for the listing on the calendar date. This field should be used for daily revenue calculations.
+        description: Cleaned nightly rental price in USD for the listing on the calendar date. Only meaningful as revenue on days where reservation_id is not null.
 
       - name: minimum_nights
         description: Minimum number of consecutive nights required.

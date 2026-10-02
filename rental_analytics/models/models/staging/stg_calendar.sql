@@ -20,7 +20,6 @@ cleaned as (
         case
             when lower(trim(available)) = 't' then true
             when lower(trim(available)) = 'f' then false
-            else null
         end as is_available,
 
         try_cast(
