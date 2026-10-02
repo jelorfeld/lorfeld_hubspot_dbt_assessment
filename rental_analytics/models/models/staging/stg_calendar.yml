@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: stg_calendar
+    description: Cleaned calendar data at the listing-day grain. Each row represents one listing on one calendar date.
+
+    columns:
+      - name: listing_id
+        description: Identifier for the listing.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_listings')
+              field: listing_id
+
+      - name: calendar_date
+        description: Date represented by the calendar row.
+        tests:
+          - not_null
+
+      - name: is_available
+        description: Whether the listing was available on the calendar date.
+        tests:
+          - accepted_values:
+              values: [true, false]
+
+      - name: reservation_id
+        description: Reservation identifier, when the date was reserved.
+
+      - name: nightly_price
+        description: Cleaned nightly rental price for the listing on the calendar date. This field should be used for daily revenue calculations.
+
+      - name: minimum_nights
+        description: Minimum number of consecutive nights required.
+
+      - name: maximum_nights
+        description: Maximum number of consecutive nights permitted.
