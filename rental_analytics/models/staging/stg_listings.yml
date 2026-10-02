@@ -1,0 +1,69 @@
+version: 2
+
+models:
+  - name: stg_listings
+    description: Cleaned listing-level data. Grain is one row per listing.
+
+    columns:
+      - name: listing_id
+        description: Unique identifier for the listing.
+        tests:
+          - not_null
+          - unique
+
+      - name: listing_name
+        description: Display name of the listing.
+
+      - name: host_id
+        description: Identifier for the listing host.
+
+      - name: host_name
+        description: Display name of the host.
+
+      - name: host_since
+        description: Timestamp when the host signed up.
+
+      - name: host_location
+        description: Location associated with the host.
+
+      - name: host_verifications
+        description: JSON array of host verification methods.
+
+      - name: neighborhood
+        description: Neighborhood where the listing is located.
+
+      - name: property_type
+        description: Type of property.
+
+      - name: room_type
+        description: Type of room.
+
+      - name: accommodates
+        description: Number of guests the listing accommodates.
+
+      - name: bathrooms_text
+        description: Source description of the bathrooms.
+
+      - name: bedrooms
+        description: Number of bedrooms.
+
+      - name: beds
+        description: Number of beds.
+
+      - name: amenities
+        description: JSON array of amenities.
+
+      - name: listed_price
+        description: Cleaned listing price snapshot from the source listing. Daily pricing should come from the calendar model.
+
+      - name: number_of_reviews
+        description: Total number of reviews received by the listing.
+
+      - name: first_review
+        description: Date of the first review.
+
+      - name: last_review
+        description: Date of the most recent review.
+
+      - name: review_scores_rating
+        description: Average review score for the listing.

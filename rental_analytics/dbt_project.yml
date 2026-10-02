@@ -1,22 +1,28 @@
-
-# Name your project! Project names should contain only lowercase characters
-# and underscores. A good package name should reflect your organization's
-# name or the intended use of these models
 name: 'rental_analytics'
 version: '1.0.0'
 profile: 'rental_analytics'
 
 model-paths: ["models"]
 seed-paths: ["seeds"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
 
 models:
   rental_analytics:
     staging:
       +materialized: view
+      +tags: ['staging']
     intermediate:
       +materialized: view
+      +tags: ['intermediate']
     marts:
       +materialized: table
+      +tags: ['marts']
 
 seeds:
   rental_analytics:
