@@ -60,19 +60,13 @@ select
     valid_to_date,
     amenities,
 
-    coalesce(
-        json_contains(amenities, '"Air conditioning"'),
-        false
-    ) as has_air_conditioning,
+{{ amenity_flag('amenities', 'Air conditioning') }}
+as has_air_conditioning,
 
-    coalesce(
-        json_contains(amenities, '"Lockbox"'),
-        false
-    ) as has_lockbox,
+{{ amenity_flag('amenities', 'Lockbox') }}
+as has_lockbox,
 
-    coalesce(
-        json_contains(amenities, '"First aid kit"'),
-        false
-    ) as has_first_aid_kit
+{{ amenity_flag('amenities', 'First aid kit') }}
+as has_first_aid_kit
 
 from effective_ranges
