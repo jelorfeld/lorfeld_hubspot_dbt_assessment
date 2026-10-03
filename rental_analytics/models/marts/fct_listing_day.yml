@@ -4,7 +4,11 @@ models:
   - name: fct_listing_day
     description: >
       Daily listing-level reporting mart. The grain is one row per listing
-      per calendar date.
+      per calendar date. Every calendar row is kept, including rows for
+      listings missing from stg_listings (is_orphan_listing = true), so
+      revenue and occupancy totals reconcile to the source calendar. Listing
+      attributes (name, host, neighborhood, property details) are null on
+      orphan rows; calendar and amenity columns are still populated.
 
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -48,7 +52,12 @@ models:
         description: Number of beds.
 
       - name: is_orphan_listing
-        description: Indicates that the calendar row has no matching listing metadata in stg_listings.
+        description: >
+          True when the calendar row has no matching listing in stg_listings,
+          so listing attributes are null. Revenue, occupancy, price and amenity
+          columns are still valid. Filter on this only when the analysis needs
+          listing attributes; do not use it as a blanket exclusion. See the
+          data quality section of the README.
         tests:
           - accepted_values:
               values: [true, false]

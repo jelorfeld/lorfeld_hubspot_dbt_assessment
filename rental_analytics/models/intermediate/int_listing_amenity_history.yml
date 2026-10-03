@@ -4,41 +4,64 @@ models:
   - name: int_listing_amenity_history
     description: Effective-dated amenity history for each listing. Each row represents the amenity configuration active from valid_from_date up to, but not including, valid_to_date. A null valid_to_date indicates the current amenity configuration.
 
-  - name: listing_id
-    description: Identifier for the listing.
-    tests:
+    # SCD2 integrity. Overlapping ranges are covered by the singular test
+    # tests/assert_no_overlapping_amenity_ranges.sql.
+    data_tests:
+      # one row per listing per effective-from date
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - listing_id
+              - valid_from_date
+
+      # ranges are half-open [from, to), so a closed range must end after it starts
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "valid_to_date > valid_from_date"
+          config:
+            where: "valid_to_date is not null"
+
+    columns:
+      - name: listing_id
+        description: Identifier for the listing. Can reference a listing that is missing from stg_listings (see the data quality section of the README).
+        data_tests:
           - not_null
+          # only one current (open-ended) configuration per listing
+          - unique:
+              name: int_listing_amenity_history_one_current_record_per_listing
+              config:
+                where: "valid_to_date is null"
           - relationships:
-              to: ref('stg_listings')
-              field: listing_id
+              arguments:
+                to: ref('stg_listings')
+                field: listing_id
+                config:
+                  severity: warn
 
-  - name: valid_from_date
-    description: First date on which this amenity configuration is active.
-    tests:
-      - not_null
+      - name: valid_from_date
+        description: First date on which this amenity configuration is active.
+        data_tests:
+          - not_null
 
-  - name: valid_to_date
-    description: Exclusive end date for this amenity configuration.
+      - name: valid_to_date
+        description: Exclusive end date for this amenity configuration. Null for the current configuration.
 
-  - name: amenities
-    description: JSON array of amenities active during this effective period.
-    tests:
-      - not_null
+      - name: amenities
+        description: JSON array of amenities active during this effective period.
+        data_tests:
+          - not_null
 
-  - name: has_air_conditioning
-    description: Whether the listing had air conditioning during this period.
-    tests:
-      - accepted_values:
-          values: [true, false]
+      - name: has_air_conditioning
+        description: Whether the listing had air conditioning during this period.
+        data_tests:
+          - not_null
 
-  - name: has_lockbox
-    description: Whether the listing had a lockbox during this period.
-    tests:
-      - accepted_values:
-          values: [true, false]
+      - name: has_lockbox
+        description: Whether the listing had a lockbox during this period.
+        data_tests:
+          - not_null
 
-  - name: has_first_aid_kit
-    description: Whether the listing had a first aid kit during this period.
-    tests:
-      - accepted_values:
-          values: [true, false]
+      - name: has_first_aid_kit
+        description: Whether the listing had a first aid kit during this period.
+        data_tests:
+          - not_null

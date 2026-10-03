@@ -14,9 +14,10 @@ with monthly_revenue as (
 
     from {{ ref('fct_listing_day') }}
 
-    where
-        is_orphan_listing = false
-        and has_air_conditioning is not null
+    -- Orphan listings are intentionally included: their revenue comes from the
+    -- calendar and their amenity flags from the changelog, so neither depends
+    -- on the missing listing metadata. Excluding them would understate revenue.
+    where has_air_conditioning is not null
 
     group by
         cast(date_trunc('month', calendar_date) as date),
