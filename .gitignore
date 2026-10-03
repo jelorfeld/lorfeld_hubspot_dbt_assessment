@@ -5,3 +5,7 @@ target/
 dbt_packages/
 logs/
 .DS_Store
+
+# dbt local user id and editor settings
+.user.yml
+.vscode/
