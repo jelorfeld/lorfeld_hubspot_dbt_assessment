@@ -1,4 +1,5 @@
-with listing_prices as (
+--Write a query to find the average price increase for each neighborhood from July 12th 2021 to July 11th 2022.
+with listing_prices as ( -- listing_id, neighborhood, price_on_2021_07_12, price_on_2022_07_11
 
     select
         listing_id,
@@ -34,7 +35,7 @@ with listing_prices as (
 
 ),
 
-price_changes as (
+price_changes as ( -- shows the price increase for each listing that has both prices
 
     select
         listing_id,

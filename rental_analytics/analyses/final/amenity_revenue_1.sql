@@ -1,4 +1,5 @@
-with monthly_revenue as (
+--Write a query to find the total revenue and percentage of revenue by month segmented by whether or not air conditioning exists on the listing.
+with monthly_revenue as ( -- month, air conditioning status, total revenue
 
     select
         cast(date_trunc('month', calendar_date) as date) as revenue_month,
@@ -25,7 +26,7 @@ with monthly_revenue as (
 
 ),
 
-with_percentages as (
+with_percentages as ( -- month, air conditioning status, total revenue, monthly total revenue
 
     select
         revenue_month,

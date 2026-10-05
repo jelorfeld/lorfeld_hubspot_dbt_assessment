@@ -1,4 +1,5 @@
-with eligible_available_days as (
+--Write a query to determine the longest possible stay duration for rental listings thatinclude both a lockbox and first aid kit in their amenities, considering both listing availability windows and maximum stay limits set by property owners.
+with eligible_available_days as ( -- date for every listing that is available and has both a lockbox and first aid kit with min/max nights
 
     select
         listing_id,
@@ -16,7 +17,7 @@ with eligible_available_days as (
 
 ),
 
-with_previous_date as (
+with_previous_date as ( -- adds prior date
 
     select
         *,
@@ -29,7 +30,7 @@ with_previous_date as (
 
 ),
 
-marked_windows as (
+marked_windows as ( -- marks the start of a new availability window for each listing
 
     select
         *,
@@ -47,7 +48,7 @@ marked_windows as (
 
 ),
 
-numbered_windows as (
+numbered_windows as ( -- assigns a unique ID to each availability window for each listing
 
     select
         *,
@@ -61,8 +62,7 @@ numbered_windows as (
 
 ),
 
-availability_windows as (
-
+availability_windows as ( -- aggregates the available days for each availability window for each listing
     select
         listing_id,
         availability_window_id,
@@ -81,7 +81,7 @@ availability_windows as (
 
 ),
 
-constrained_windows as (
+constrained_windows as ( -- calculates the longest possible stay for each availability window for each listing, considering both the available days and the owner's maximum stay limit
 
     select
         listing_id,
@@ -100,7 +100,7 @@ constrained_windows as (
 
 ),
 
-bookable_windows as (
+bookable_windows as ( -- filters out availability windows that are shorter than the owner's minimum stay requirement, as they cannot be booked
 
     select *
 
