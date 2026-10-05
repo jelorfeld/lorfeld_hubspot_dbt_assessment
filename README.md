@@ -13,12 +13,14 @@ From the repository root:
 
 ```bash
 python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt   # dbt-core, dbt-duckdb, sqlfluff
 
 cd rental_analytics
+source ../.venv/bin/activate      # the venv lives at the repository root
+pip install -r ../requirements.txt   # dbt-core, dbt-duckdb, sqlfluff
 dbt deps                          # installs dbt_utils (packages.yml)
 ```
+
+All later commands run from `rental_analytics/`. To reactivate the environment in a new shell, run `source ../.venv/bin/activate` from there.
 
 ### 2. Load the source data
 

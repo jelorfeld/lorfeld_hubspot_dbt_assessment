@@ -10,7 +10,7 @@ with source as (
 
 ),
 
-cleaned as (
+cleansed as (
 
     select
         try_cast(listing_id as bigint) as listing_id,
@@ -27,4 +27,4 @@ cleaned as (
 )
 
 select *
-from cleaned
+from cleansed
