@@ -9,6 +9,7 @@ with available_days as (
     select
         listing_id,
         calendar_date,
+        minimum_nights,
         maximum_nights,
         calendar_date - cast(
             row_number() over (partition by listing_id order by calendar_date) as integer
@@ -26,7 +27,9 @@ with available_days as (
 
 stays as (
 
-    select least(count(*), min(maximum_nights)) as possible_stay_days
+    select
+        least(count(*), min(maximum_nights)) as possible_stay_days,
+        max(minimum_nights) as minimum_nights_required
 
     from available_days
 
@@ -37,5 +40,7 @@ stays as (
 select max(possible_stay_days) as longest_stay_days
 
 from stays
+
+where possible_stay_days >= minimum_nights_required
 
 having max(possible_stay_days) is distinct from 159

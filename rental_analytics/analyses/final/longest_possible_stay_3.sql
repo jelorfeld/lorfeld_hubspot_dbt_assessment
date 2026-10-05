@@ -3,6 +3,7 @@ with eligible_available_days as (
     select
         listing_id,
         calendar_date,
+        minimum_nights,
         maximum_nights
 
     from {{ ref('fct_listing_day') }}
@@ -68,6 +69,8 @@ availability_windows as (
         min(calendar_date) as available_from,
         max(calendar_date) as available_through,
         count(*) as available_days,
+        -- strictest owner rules within the window
+        max(minimum_nights) as minimum_nights_required,
         min(maximum_nights) as maximum_nights_limit
 
     from numbered_windows
@@ -85,6 +88,7 @@ constrained_windows as (
         available_from,
         available_through,
         available_days,
+        minimum_nights_required,
         maximum_nights_limit,
 
         least(
@@ -94,6 +98,17 @@ constrained_windows as (
 
     from availability_windows
 
+),
+
+bookable_windows as (
+
+    select *
+
+    from constrained_windows
+
+    -- a window shorter than the owner's minimum stay can't be booked at all
+    where possible_stay_days >= coalesce(minimum_nights_required, 1)
+
 )
 
 select
@@ -101,10 +116,11 @@ select
     available_from,
     available_through,
     available_days,
+    minimum_nights_required,
     maximum_nights_limit,
     possible_stay_days
 
-from constrained_windows
+from bookable_windows
 
 qualify
     row_number() over (

@@ -180,14 +180,15 @@ Average change in nightly price per listing from 2021-07-12 to 2022-07-11, by ne
 For listings with **both** a lockbox and a first aid kit, the query finds the longest possible stay:
 - It finds each unbroken run of available days (gaps and islands).
 - It caps each run at the listing's `maximum_nights` (the strictest value within the run).
+- It drops runs shorter than the listing's `minimum_nights` (again the strictest value), since they can't be booked at all. For 1303261 this removes one short window.
 - It keeps each listing's longest run.
 
 Result: 2 listings.
 
-| listing_id | available_from | available_through | available_days | maximum_nights_limit | possible_stay_days |
-|---|---|---|---|---|---|
-| **1303261** | 2022-02-03 | 2022-07-11 | 159 | 180 | **159** ✓ |
-| 182613 | 2021-07-12 | 2021-10-31 | 112 | 1125 | 112 |
+| listing_id | available_from | available_through | available_days | minimum_nights_required | maximum_nights_limit | possible_stay_days |
+|---|---|---|---|---|---|---|
+| **1303261** | 2022-02-03 | 2022-07-11 | 159 | 91 | 180 | **159** ✓ |
+| 182613 | 2021-07-12 | 2021-10-31 | 112 | 91 | 1125 | 112 |
 
 ### Business results validation
 
@@ -265,7 +266,7 @@ The listing is treated as an unknown dimension member: the fact row stays and th
 
 - **Upstream:** raise it with the source-system owner, with the evidence above, so the blank `ID` gets fixed at the source. Once it's fixed, the listing joins normally and the warnings clear on their own.
 - **Not quarantine:** moving these rows to a quarantine table would take real revenue out of the mart, which is the outcome the orphan flag exists to avoid.
-- **Test severity:** keep the `relationships` tests at `warn` so one known defect doesn't block every build. To stop the known warning from hiding new problems, add `warn_if: ">0"` / `error_if` thresholds (or a singular test that allows only `276450`), so a new orphan listing fails the build instead of adding to the existing warning.
+- **Test severity:** the `relationships` tests use `warn_if: ">0"` with an `error_if` threshold set to the known orphan's row count (365 calendar rows, 2 changelog rows, 2 history rows). The one known defect warns without blocking the build, but a new orphan pushes the count over the threshold and fails it, instead of hiding inside the existing warning. The trade-off is that the thresholds are row counts: once `276450` is fixed upstream they should be lowered to `0`. A singular test that allows only `276450` would be the stricter alternative.
 
 ## Known limitations
 

@@ -9,12 +9,15 @@ models:
         description: Identifier for the listing.
         data_tests:
           - not_null
+          # Known orphan: listing 276450 has 2 changelog rows (see README data quality).
+          # Its 2 rows warn; anything beyond that is a new orphan and fails the build.
           - relationships:
               arguments:
                 to: ref('stg_listings')
                 field: listing_id
-                config:
-                  severity: warn
+              config:
+                warn_if: ">0"
+                error_if: ">2"
 
       - name: amenities_changed_at
         description: Timestamp when the amenity configuration changed.
