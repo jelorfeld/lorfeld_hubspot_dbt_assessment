@@ -36,7 +36,7 @@ dbt seed
 dbt build
 ```
 
-`dbt build` runs seeds, models and tests in dependency order, so step 2 is optional when running everything. `profiles.yml` lives in the project folder, so `--profiles-dir .` is needed; alternatively set `DBT_PROFILES_DIR=.`.
+`dbt build` runs seeds, models and tests in dependency order, so step 2 is optional when running everything. `profiles.yml` is in the project folder, and dbt (1.3+) looks for it in the current directory, so no `--profiles-dir` flag is needed as long as you run commands from `rental_analytics/`.
 
 **Expected result:** `PASS=51 WARN=4 ERROR=0`. Three of the warnings are one known orphan listing. The fourth lists the 2 raw listings rows that staging excludes. Both are explained in [Data quality](#data-quality-strategy).
 
@@ -45,7 +45,7 @@ dbt build
 The answers to the brief are dbt analyses in `analyses/final/`. Compile them, then run the compiled SQL against `dev.duckdb`:
 
 ```bash
-dbt compile --profiles-dir . --select analyses/final
+dbt compile --select analyses/final
 # compiled SQL: target/compiled/rental_analytics/analyses/final/*.sql
 ```
 
