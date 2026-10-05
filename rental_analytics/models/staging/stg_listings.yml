@@ -15,7 +15,7 @@ models:
         description: Display name of the listing.
 
       - name: host_id
-        description: Identifier for the listing host. The test account (sentinel host_id-99999) is excluded. Nulls are allowed.
+        description: Identifier for the listing host. The test account (sentinel host_id = -99999) is excluded. Nulls are allowed.
         data_tests:
           - dbt_utils.accepted_range:
               arguments:

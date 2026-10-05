@@ -40,7 +40,8 @@ deduplicated as (
 
     select * from cleansed
 
-    -- The source has at least one listing/date pair that appears twice.
+    -- The source has at least one listing/date pair that appears more than
+    -- once (1303261 on 2022-07-07 appears three times, as identical copies).
     -- Keep one row per pair, preferring the row with a reservation so booked
     -- revenue is never dropped. Remaining ties are broken on price, then stay
     -- limits, so the result is deterministic.

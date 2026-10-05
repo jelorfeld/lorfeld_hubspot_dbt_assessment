@@ -90,7 +90,9 @@ To browse freely while building, copy the database after each build (`cp dev.duc
 - **Staging:** renames columns, casts types and cleans values. It parses `$1,125.00` prices and literal `'NULL'` text, maps `t`/`f` to booleans, and parses JSON arrays. It also removes rows that can't be keys: the blank-ID listing, the test listing, and duplicate calendar rows. No business logic or joins.
 - **Intermediate:** turns the amenity changelog into effective-dated ranges and derives the amenity flags. See [Amenity history](#amenity-history-approach).
 - **Marts:** `fct_listing_day` joins each calendar day to the listing's attributes and to the amenity configuration in effect on that date, and adds the revenue and occupancy measures.
-- **Macros:** `amenity_flag` turns "does the amenity JSON array contain X" into one reusable expression, so adding a new amenity flag is one line.
+- **Macros:**
+  - `amenity_flag` turns "does the amenity JSON array contain X" into one reusable expression, so adding a new amenity flag is one line.
+  - `clean_currency` parses price text (`$1,125.00`, blanks, literal `'NULL'`) into a decimal. Both `stg_calendar` and `stg_listings` use it, so the two prices are always cleaned the same way.
 
 ## Metric definitions
 
@@ -222,6 +224,12 @@ Rows filtered out in staging stay visible:
 - `tests/assert_listings_excluded_from_staging.sql` (severity `warn`) returns the raw `listings` rows that staging drops. It warns with 2 rows today; a higher count means new bad rows have arrived in the source.
 - `dbt_utils.accepted_range` (`min_value: 1`) on `stg_listings.host_id` fails the build if the test account or any non-positive host ID reaches staging.
 
+The mart is checked against the calendar, so no revenue is lost or double-counted between staging and reporting:
+
+- `dbt_utils.equal_rowcount` checks that `fct_listing_day` has exactly one row per `stg_calendar` row. A join that dropped rows or fanned out (for example, through an overlapping amenity range) would fail it.
+- `tests/assert_fct_listing_day_revenue_reconciles.sql` checks that total revenue and occupied days in the mart match `stg_calendar`.
+- `not_null` tests on the mart's amenity columns catch a listing-day with no amenity history, which amenity analyses would otherwise silently leave out.
+
 ### The orphan listing (the 3 warnings)
 
 All three `relationships` warnings come from one listing ID, `276450`:
@@ -317,6 +325,15 @@ AI use stayed within the assessment's four acceptable categories. Examples of ea
 2. **A wrong answer to Problem 1.**
    - *What AI did:* traced why the query returned 22.1% instead of the brief's 21.2%. The cause was an `is_orphan_listing = false` filter excluding listing `276450`. AI then found that this "orphan" is almost certainly the listing row with a blank ID.
    - *How I checked it:* re-ran the evidence queries myself (host date, opening price, amenity count) and confirmed that 21.2% comes back once the filter is removed.
+3. **A review of the finished project.**
+   - *What AI did:* after the project was built, I asked AI to review the repo and walk through its usage and tests. It flagged a list of issues, and I chose which to fix:
+     - `fct_listing_day.yml` still used the pre-1.10 test syntax (4 deprecation warnings), and the mart's flag and revenue columns had no `not_null` tests.
+     - The mart had no check that it reconciles to the calendar. Added `dbt_utils.equal_rowcount` against `stg_calendar` and `tests/assert_fct_listing_day_revenue_reconciles.sql`.
+     - The `clean_currency` macro existed but wasn't used; both staging models now call it.
+     - The orphan `relationships` tests now have `warn_if`/`error_if` thresholds, as planned in [Data quality](#in-production-fix-upstream-or-quarantine).
+     - Problem #3 didn't apply `minimum_nights`. I added the rule, since a window shorter than the minimum stay can't be booked.
+     - Smaller fixes: an unused `__sources.yml` removed, `beds` cast to integer, sqlfluff failures and README setup wording corrected.
+   - *How I checked it:* every change was followed by a full `dbt build`. The new tests were confirmed to fail on a deliberately broken mart (one listing removed), and the thresholds were confirmed to escalate to an error when exceeded. Replacing the inline price parsing with the macro left all 18,250 calendar prices and 49 listing prices unchanged, and the #3 answer stays at 159 days with the `minimum_nights` rule.
 
 ### Generate documentation and comments
 

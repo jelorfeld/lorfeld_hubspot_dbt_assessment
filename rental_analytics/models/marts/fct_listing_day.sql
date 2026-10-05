@@ -40,8 +40,8 @@ select
     h.has_air_conditioning,
     h.has_lockbox,
     h.has_first_aid_kit,
-    coalesce(l.listing_id is null, false) as is_orphan_listing,
-    coalesce(c.reservation_id is not null, false) as is_occupied,
+    l.listing_id is null as is_orphan_listing,
+    c.reservation_id is not null as is_occupied,
     case
         when c.reservation_id is not null
             then c.nightly_price
