@@ -26,16 +26,7 @@ cleansed as (
         end as is_available,
 
         -- price arrives as text like '$125.00'; it exists on every day, booked or not
-        try_cast(
-            nullif(
-                nullif(
-                    replace(replace(trim(price), '$', ''), ',', ''),
-                    ''
-                ),
-                'NULL'
-            )
-            as decimal(10, 2)
-        ) as nightly_price,
+        {{ clean_currency('price') }} as nightly_price,
 
         -- stay rules
         try_cast(minimum_nights as integer) as minimum_nights,

@@ -33,10 +33,7 @@ renamed_and_cast as (
 
         -- price arrives as text like '$1,125.00'; this is the snapshot price
         -- at the start of the calendar range, not a daily price
-        try_cast(
-            replace(replace(price, '$', ''), ',', '')
-            as decimal(10, 2)
-        ) as listed_price,
+        {{ clean_currency('price') }} as listed_price,
 
         -- dates and timestamps
         try_cast(host_since as timestamp) as host_since,
