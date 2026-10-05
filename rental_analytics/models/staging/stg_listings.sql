@@ -27,7 +27,7 @@ renamed_and_cast as (
         -- numerics
         try_cast(accommodates as integer) as accommodates,
         try_cast(bedrooms as decimal(10, 2)) as bedrooms,
-        try_cast(beds as decimal(10, 2)) as beds,
+        try_cast(beds as integer) as beds,
         try_cast(number_of_reviews as integer) as number_of_reviews,
         try_cast(review_scores_rating as decimal(5, 2)) as review_scores_rating,
 

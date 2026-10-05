@@ -26,8 +26,7 @@ with available_days as (
 
 stays as (
 
-    select
-        least(count(*), min(maximum_nights)) as possible_stay_days
+    select least(count(*), min(maximum_nights)) as possible_stay_days
 
     from available_days
 

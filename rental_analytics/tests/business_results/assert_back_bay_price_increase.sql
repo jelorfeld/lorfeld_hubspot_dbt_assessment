@@ -35,5 +35,5 @@ from neighborhood_average
 
 where
     avg_price_increase is distinct from 44
-    or listing_count != 1
-    or listing_ids != [10813]
+    or listing_count <> 1
+    or listing_ids <> [10813]

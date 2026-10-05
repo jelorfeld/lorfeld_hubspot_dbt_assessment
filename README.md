@@ -38,7 +38,7 @@ dbt build
 
 `dbt build` runs seeds, models and tests in dependency order, so step 2 is optional when running everything. `profiles.yml` lives in the project folder, so `--profiles-dir .` is needed; alternatively set `DBT_PROFILES_DIR=.`.
 
-**Expected result:** `PASS=38 WARN=4 ERROR=0`. Three of the warnings are one known orphan listing. The fourth lists the 2 raw listings rows that staging excludes. Both are explained in [Data quality](#data-quality-strategy).
+**Expected result:** `PASS=43 WARN=4 ERROR=0`. Three of the warnings are one known orphan listing. The fourth lists the 2 raw listings rows that staging excludes. Both are explained in [Data quality](#data-quality-strategy).
 
 ### 4. Run the business-problem queries
 

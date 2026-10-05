@@ -59,15 +59,12 @@ select
     valid_from_date,
     valid_to_date,
     amenities,
--- did not pull out all amenities because some listings have a lot of amenities and it would be a pain to maintain. Instead, we will just pull out a few key amenities that we want to track over time.
 
-{{ amenity_flag('amenities', 'Air conditioning') }}
-as has_air_conditioning,
-
-{{ amenity_flag('amenities', 'Lockbox') }}
-as has_lockbox,
-
-{{ amenity_flag('amenities', 'First aid kit') }}
-as has_first_aid_kit
+    -- Did not pull out all amenities because some listings have a lot of
+    -- amenities and it would be a pain to maintain. Instead, only flag the
+    -- few key amenities we want to track over time.
+    {{ amenity_flag('amenities', 'Air conditioning') }} as has_air_conditioning,
+    {{ amenity_flag('amenities', 'Lockbox') }} as has_lockbox,
+    {{ amenity_flag('amenities', 'First aid kit') }} as has_first_aid_kit
 
 from effective_ranges

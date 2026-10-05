@@ -10,21 +10,22 @@ models:
       attributes (name, host, neighborhood, property details) are null on
       orphan rows; calendar and amenity columns are still populated.
 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - listing_id
-            - calendar_date
+          arguments:
+            combination_of_columns:
+              - listing_id
+              - calendar_date
 
     columns:
       - name: listing_id
         description: Identifier for the listing.
-        tests:
+        data_tests:
           - not_null
 
       - name: calendar_date
         description: Calendar date represented by the row.
-        tests:
+        data_tests:
           - not_null
 
       - name: listing_name
@@ -58,30 +59,40 @@ models:
           columns are still valid. Filter on this only when the analysis needs
           listing attributes; do not use it as a blanket exclusion. See the
           data quality section of the README.
-        tests:
+        data_tests:
+          - not_null
           - accepted_values:
-              values: [true, false]
+              arguments:
+                values: [true, false]
 
       - name: nightly_price
         description: Nightly price for the listing on the calendar date.
+        data_tests:
+          - not_null
 
       - name: is_available
         description: Whether the listing was available on the calendar date.
-        tests:
+        data_tests:
+          - not_null
           - accepted_values:
-              values: [true, false]
+              arguments:
+                values: [true, false]
 
       - name: reservation_id
         description: Reservation identifier when the date was reserved.
 
       - name: is_occupied
         description: Whether the listing had a reservation on the date.
-        tests:
+        data_tests:
+          - not_null
           - accepted_values:
-              values: [true, false]
+              arguments:
+                values: [true, false]
 
       - name: nightly_revenue
         description: Nightly price when occupied, otherwise zero.
+        data_tests:
+          - not_null
 
       - name: minimum_nights
         description: Minimum consecutive-night requirement.

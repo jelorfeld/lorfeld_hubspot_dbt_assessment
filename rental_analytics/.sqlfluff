@@ -8,3 +8,4 @@ exclude_rules = LT05
 ref = {% macro ref(model_name) %}{{ model_name }}{% endmacro %}
 source = {% macro source(source_name, table_name) %}{{ source_name }}_{{ table_name }}{% endmacro %}
 config = {% macro config(materialized=none, schema=none, alias=none, tags=none, unique_key=none, severity=none) %}{% endmacro %}
+amenity_flag = {% macro amenity_flag(amenities_column, amenity_name) %}coalesce(json_contains({{ amenities_column }}, '"{{ amenity_name }}"'), false){% endmacro %}
