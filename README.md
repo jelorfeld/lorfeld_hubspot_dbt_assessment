@@ -1,7 +1,7 @@
 # lorfeld_hubspot_dbt_assessment
 Analytics engineering technical assessment: dbt data pipeline and SQL analytical queries for rental property revenue, neighborhood pricing, and amenity changelogs.
 
-**Contents:** [Setup](#setup) · [Project structure](#project-structure) · [Metric definitions](#metric-definitions) · [Amenity history](#amenity-history-approach) · [Business results](#business-results) · [Data quality](#data-quality-strategy) · [Known limitations](#known-limitations) · [AI use](#ai-use-disclosure)
+**Contents:** [Setup](#setup) · [Metric definitions](#metric-definitions) · [Amenity history](#amenity-history-approach) · [Business results](#business-results) · [Data quality](#data-quality-strategy) · [Known limitations](#known-limitations) · [AI use](#ai-use-disclosure)
 
 ## Setup
 
