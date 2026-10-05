@@ -29,9 +29,9 @@ seeds:
     raw:
       listings:
         +column_types:
-          PRICE: varchar
+          PRICE: varchar           # '$1,125.00' - currency symbol and commas
       calendar:
         +column_types:
-          AVAILABLE: varchar
-          RESERVATION_ID: varchar
-          PRICE: varchar
+          AVAILABLE: varchar       # 't'/'f' flags, mapped to is_available
+          RESERVATION_ID: varchar  # contains literal 'NULL' strings
+          PRICE: varchar           # cleaned the same way as listings.PRICEdb

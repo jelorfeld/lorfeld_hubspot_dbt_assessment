@@ -4,7 +4,7 @@ with source as (
 
 ),
 
-cleaned as (
+cleansed as (
 
     select
         -- ids
@@ -47,7 +47,7 @@ cleaned as (
 
 deduplicated as (
 
-    select * from cleaned
+    select * from cleansed
 
     -- The source has at least one listing/date pair that appears twice.
     -- Keep one row per pair, preferring the row with a reservation so booked

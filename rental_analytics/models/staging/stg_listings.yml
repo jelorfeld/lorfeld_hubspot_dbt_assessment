@@ -7,7 +7,7 @@ models:
     columns:
       - name: listing_id
         description: Unique identifier for the listing.
-        tests:
+        data_tests:
           - not_null
           - unique
 
@@ -15,8 +15,12 @@ models:
         description: Display name of the listing.
 
       - name: host_id
-        description: Identifier for the listing host.
-
+        description: Identifier for the listing host. The test account (sentinel host_id-99999) is excluded. Nulls are allowed.
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 1
+       
       - name: host_name
         description: Display name of the host.
 

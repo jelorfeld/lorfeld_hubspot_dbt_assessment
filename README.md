@@ -27,18 +27,18 @@ All later commands run from `rental_analytics/`. To reactivate the environment i
 The three source CSVs are in `rental_analytics/seeds/raw/` and load as dbt seeds. `dbt_project.yml` forces price and flag columns to `varchar`, so staging does all the parsing.
 
 ```bash
-dbt seed --profiles-dir .
+dbt seed
 ```
 
 ### 3. Build and test
 
 ```bash
-dbt build --profiles-dir .
+dbt build
 ```
 
 `dbt build` runs seeds, models and tests in dependency order, so step 2 is optional when running everything. `profiles.yml` lives in the project folder, so `--profiles-dir .` is needed; alternatively set `DBT_PROFILES_DIR=.`.
 
-**Expected result:** `PASS=37 WARN=3 ERROR=0`. The three warnings are one known orphan listing, explained in [Data quality](#data-quality-strategy).
+**Expected result:** `PASS=38 WARN=4 ERROR=0`. Three of the warnings are one known orphan listing. The fourth lists the 2 raw listings rows that staging excludes. Both are explained in [Data quality](#data-quality-strategy).
 
 ### 4. Run the business-problem queries
 
@@ -48,6 +48,27 @@ The answers to the brief are dbt analyses in `analyses/final/`. Compile them, th
 dbt compile --profiles-dir . --select analyses/final
 # compiled SQL: target/compiled/rental_analytics/analyses/final/*.sql
 ```
+
+### 5. Inspect tables (and the DuckDB file lock)
+
+DuckDB is an embedded, single-file database. Only one process can open `dev.duckdb` for writing at a time, and a write lock blocks every other connection. If a VS Code extension (a DuckDB explorer, SQLTools, dbt Power User, etc.) or a DuckDB CLI session has the file open, `dbt build` fails with:
+
+```
+IO Error: Could not set lock on file ".../dev.duckdb": Conflicting lock is held in ... Code Helper (Plugin) ...
+```
+
+The fix is to disconnect the other tool, or run "Developer: Restart Extension Host" in VS Code, and then build again. The reverse also applies: while dbt is building, viewers can't open the file.
+
+Ways to look at the output without hitting the lock:
+
+| Option | Command | Notes |
+|---|---|---|
+| `dbt show` | `dbt show --select fct_listing_day --limit 20` | Uses dbt's own connection, so it never conflicts. Also accepts `--inline "select ... from {{ ref('fct_listing_day') }}"` |
+| DuckDB CLI, read-only | `duckdb -readonly dev.duckdb` | Good for ad-hoc SQL. Quit before running `dbt build` |
+| VS Code extension, read-only | Set the connection's access mode to read-only | Keeps the schema browser. Disconnect before building, and reconnect afterwards to see new data |
+| DuckDB UI | `duckdb -readonly -ui dev.duckdb` | Browser-based notebook (DuckDB 1.2.1+). Close before building |
+
+To browse freely while building, copy the database after each build (`cp dev.duckdb browse.duckdb`) and point the viewer at the copy.
 
 ### Models and grain
 
@@ -188,12 +209,17 @@ Result: 2 listings.
 
 | Issue | Where | Handling |
 |---|---|---|
-| Test listing (`host_id = -99999`, `host_since` 1995, name "TESTING LISTING") | `listings` | Removed in `stg_listings` |
-| Listing with a blank `ID` | `listings` | Removed in `stg_listings`: a row without a primary key can't be joined |
+| Two listings with a blank `ID` | `listings` | Removed in `stg_listings`: a row without a primary key can't be joined |
+| One of those two is a test listing (`host_id = -99999`, `host_since` 1995, name "TESTING LISTING") | `listings` | Already removed by the blank-ID filter. A separate `host_id` filter is kept as a safeguard in case it ever arrives with a real ID |
 | Calendar rows for listing `276450`, which isn't in `stg_listings` (365 rows) | `calendar` | **Kept** and flagged in the mart (see below) |
 | Amenity changes for listing `276450` (2 rows) | `amenities_changelog` | **Kept**: it feeds `int_listing_amenity_history` |
 | Duplicate `(listing_id, date)` key: listing `1303261` on 2022-07-07 appears 3 times | `calendar` | Deduplicated in `stg_calendar`; rows with a reservation are preferred so booked revenue is never dropped |
 | Literal `'NULL'` text, `$` and `,` in price and ID fields | `calendar`, `listings` | Cleaned and cast in staging |
+
+Rows filtered out in staging stay visible:
+
+- `tests/assert_listings_excluded_from_staging.sql` (severity `warn`) returns the raw `listings` rows that staging drops. It warns with 2 rows today; a higher count means new bad rows have arrived in the source.
+- `dbt_utils.accepted_range` (`min_value: 1`) on `stg_listings.host_id` fails the build if the test account or any non-positive host ID reaches staging.
 
 ### The orphan listing (the 3 warnings)
 
@@ -260,6 +286,10 @@ The listing is treated as an unknown dimension member: the fact row stays and th
 - **Day-level effective dates:** if a listing's amenities change more than once in a day, only the last change counts. Changes made partway through a day apply to the whole day.
 - **No unknown-member row in the listing dimension:** orphan rows get null attributes rather than an `'Unknown'` label. That keeps the nulls honest, but `group by neighborhood` produces a `null` bucket that analysts need to know about.
 - **Results #1–#3 are dbt analyses, not models,** so they aren't materialized for BI tools. If analysts need them regularly, monthly amenity revenue would be the first candidate to promote to a mart.
+
+### The tooling
+
+- **DuckDB allows only one writer at a time.** An IDE extension or CLI session holding `dev.duckdb` open blocks `dbt build`, and a running build blocks viewers. That's fine for a single-developer assessment but not for shared use: a team or BI tool would need a client-server warehouse (Snowflake, BigQuery, Postgres) or MotherDuck. See [Inspect tables](#5-inspect-tables-and-the-duckdb-file-lock) for workarounds.
 
 ## AI use disclosure
 
