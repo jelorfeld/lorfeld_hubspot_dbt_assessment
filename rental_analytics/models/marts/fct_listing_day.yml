@@ -17,6 +17,12 @@ models:
               - listing_id
               - calendar_date
 
+      # every stg_calendar row must reach the mart: no rows dropped by a join
+      # and none duplicated by an overlapping amenity range
+      - dbt_utils.equal_rowcount:
+          arguments:
+            compare_model: ref('stg_calendar')
+
     columns:
       - name: listing_id
         description: Identifier for the listing.
@@ -69,6 +75,9 @@ models:
         description: Nightly price for the listing on the calendar date.
         data_tests:
           - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
 
       - name: is_available
         description: Whether the listing was available on the calendar date.
@@ -93,6 +102,9 @@ models:
         description: Nightly price when occupied, otherwise zero.
         data_tests:
           - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
 
       - name: minimum_nights
         description: Minimum consecutive-night requirement.
@@ -102,15 +114,25 @@ models:
 
       - name: amenities
         description: JSON array of amenities active on the date.
+        data_tests:
+          # null means no amenity history covers this date; amenity analyses
+          # would silently drop the row's revenue
+          - not_null
 
       - name: amenities_effective_from
         description: Date when the active amenity configuration began.
 
       - name: has_air_conditioning
         description: Whether air conditioning was available.
+        data_tests:
+          - not_null
 
       - name: has_lockbox
         description: Whether a lockbox was available.
+        data_tests:
+          - not_null
 
       - name: has_first_aid_kit
         description: Whether a first aid kit was available.
+        data_tests:
+          - not_null
